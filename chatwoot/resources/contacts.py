@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from chatwoot.resources._base import AsyncBaseResource, BaseResource
-from chatwoot.types.contact import Contact
+from chatwoot.types.contact import Contact, ContactCreateResponse
 from chatwoot.types.conversation import Conversation
 
 
@@ -182,7 +182,7 @@ class ContactsResource(BaseResource):
         account_id: int,
         inbox_id: int,
         **kwargs: Any,
-    ) -> Contact:
+    ) -> ContactCreateResponse:
         """Create a new contact.
 
         Args:
@@ -191,20 +191,20 @@ class ContactsResource(BaseResource):
             **kwargs: Contact attributes (name, email, phone_number, etc.)
 
         Returns:
-            Created Contact object
+            ContactCreateResponse with contact and contact_inbox
 
         Example:
-            >>> contact = client.contacts.create(
+            >>> result = client.contacts.create(
             ...     account_id=1,
             ...     inbox_id=5,
             ...     name="John Doe",
             ...     email="john@example.com",
-            ...     phone_number="+1234567890"
             ... )
+            >>> print(result.contact.id, result.contact_inbox.source_id)
         """
         data = {"inbox_id": inbox_id, **kwargs}
         response = self._http.post(f"/api/v1/accounts/{account_id}/contacts", json=data)
-        return Contact(**response)
+        return ContactCreateResponse(**response)
 
     def update(
         self,
@@ -333,7 +333,7 @@ class AsyncContactsResource(AsyncBaseResource):
         account_id: int,
         inbox_id: int,
         **kwargs: Any,
-    ) -> Contact:
+    ) -> ContactCreateResponse:
         """Create a new contact (async).
 
         Args:
@@ -342,13 +342,13 @@ class AsyncContactsResource(AsyncBaseResource):
             **kwargs: Contact attributes
 
         Returns:
-            Created Contact object
+            ContactCreateResponse with contact and contact_inbox
         """
         data = {"inbox_id": inbox_id, **kwargs}
         response = await self._http.post(
             f"/api/v1/accounts/{account_id}/contacts", json=data
         )
-        return Contact(**response)
+        return ContactCreateResponse(**response)
 
     async def update(
         self,

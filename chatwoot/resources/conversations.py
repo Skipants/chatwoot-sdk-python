@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from chatwoot.resources._base import AsyncBaseResource, BaseResource
-from chatwoot.types.conversation import Conversation
+from chatwoot.types.conversation import Conversation, ConversationToggleStatusResponse
 
 
 class ConversationLabelsResource(BaseResource):
@@ -310,7 +310,7 @@ class ConversationsResource(BaseResource):
         account_id: int,
         conversation_id: int,
         status: str,
-    ) -> Conversation:
+    ) -> ConversationToggleStatusResponse:
         """Toggle conversation status.
 
         Args:
@@ -319,21 +319,22 @@ class ConversationsResource(BaseResource):
             status: New status ('open', 'resolved', 'pending', 'snoozed')
 
         Returns:
-            Updated Conversation object
+            ConversationToggleStatusResponse
 
         Example:
-            >>> conversation = client.conversations.toggle_status(
+            >>> result = client.conversations.toggle_status(
             ...     account_id=1,
             ...     conversation_id=42,
             ...     status="resolved"
             ... )
+            >>> print(result.current_status)
         """
         data = {"status": status}
         response = self._http.post(
             f"/api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_status",
             json=data,
         )
-        return Conversation(**response)
+        return ConversationToggleStatusResponse(**response)
 
     def get_counts(
         self,
@@ -528,7 +529,7 @@ class AsyncConversationsResource(AsyncBaseResource):
         account_id: int,
         conversation_id: int,
         status: str,
-    ) -> Conversation:
+    ) -> ConversationToggleStatusResponse:
         """Toggle conversation status (async).
 
         Args:
@@ -537,14 +538,14 @@ class AsyncConversationsResource(AsyncBaseResource):
             status: New status
 
         Returns:
-            Updated Conversation object
+            ConversationToggleStatusResponse
         """
         data = {"status": status}
         response = await self._http.post(
             f"/api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_status",
             json=data,
         )
-        return Conversation(**response)
+        return ConversationToggleStatusResponse(**response)
 
     async def get_counts(
         self,

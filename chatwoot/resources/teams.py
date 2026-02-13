@@ -69,7 +69,7 @@ class TeamAgentsResource(BaseResource):
             ... )
         """
         data = {"user_ids": agent_ids}
-        self._http.patch(
+        self._http.delete(
             f"/api/v1/accounts/{account_id}/teams/{team_id}/team_members",
             json=data,
         )
@@ -118,7 +118,7 @@ class AsyncTeamAgentsResource(AsyncBaseResource):
             agent_ids: List of agent IDs to remove
         """
         data = {"user_ids": agent_ids}
-        await self._http.patch(
+        await self._http.delete(
             f"/api/v1/accounts/{account_id}/teams/{team_id}/team_members",
             json=data,
         )
