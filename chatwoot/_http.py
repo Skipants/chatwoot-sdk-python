@@ -39,40 +39,25 @@ class HTTPClient:
         - {payload: [...]} - list response
         - {data: {payload: [...]}} - nested list response
         - {id: 1, ...} - single object response
-
-        Args:
-            data: Raw response data
-
-        Returns:
-            Unwrapped data (payload or original dict)
         """
-        # Check for nested data.payload structure
-        if isinstance(data, dict) and "data" in data:
+        if not isinstance(data, dict):
+            return data
+
+        # {data: {payload: [...]}} or {data: ...}
+        if "data" in data:
             nested_data = data["data"]
             if isinstance(nested_data, dict) and "payload" in nested_data:
                 return nested_data["payload"]
             return nested_data
 
-        # Check for direct payload structure
-        if isinstance(data, dict) and "payload" in data:
+        # {payload: ...}
+        if "payload" in data:
             return data["payload"]
 
-        # Return as-is for single object responses
         return data
 
     def _handle_error(self, response: httpx.Response) -> None:
-        """Handle error responses and raise appropriate exceptions.
-
-        Args:
-            response: HTTP response object
-
-        Raises:
-            ChatwootAuthError: For 401 responses
-            ChatwootPermissionError: For 403 responses
-            ChatwootNotFoundError: For 404 responses
-            ChatwootValidationError: For 400 responses
-            ChatwootAPIError: For other error responses
-        """
+        """Handle error responses and raise appropriate exceptions."""
         try:
             error_data = response.json()
             description = error_data.get(
@@ -120,8 +105,8 @@ class HTTPClient:
         if not response.is_success:
             self._handle_error(response)
 
-        # Handle 204 No Content
-        if response.status_code == 204:
+        # Handle empty response body (204 No Content or empty 200)
+        if response.status_code == 204 or not response.content:
             return {}
 
         data = response.json()
@@ -220,39 +205,29 @@ class AsyncHTTPClient:
     def _unwrap_response(self, data: dict[str, Any]) -> dict[str, Any] | list[Any]:
         """Unwrap API response to extract actual data.
 
-        Args:
-            data: Raw response data
-
-        Returns:
-            Unwrapped data (payload or original dict)
+        Chatwoot API returns data in various formats:
+        - {payload: [...]} - list response
+        - {data: {payload: [...]}} - nested list response
+        - {id: 1, ...} - single object response
         """
-        # Check for nested data.payload structure
-        if isinstance(data, dict) and "data" in data:
+        if not isinstance(data, dict):
+            return data
+
+        # {data: {payload: [...]}} or {data: ...}
+        if "data" in data:
             nested_data = data["data"]
             if isinstance(nested_data, dict) and "payload" in nested_data:
                 return nested_data["payload"]
             return nested_data
 
-        # Check for direct payload structure
-        if isinstance(data, dict) and "payload" in data:
+        # {payload: ...}
+        if "payload" in data:
             return data["payload"]
 
-        # Return as-is for single object responses
         return data
 
     def _handle_error(self, response: httpx.Response) -> None:
-        """Handle error responses and raise appropriate exceptions.
-
-        Args:
-            response: HTTP response object
-
-        Raises:
-            ChatwootAuthError: For 401 responses
-            ChatwootPermissionError: For 403 responses
-            ChatwootNotFoundError: For 404 responses
-            ChatwootValidationError: For 400 responses
-            ChatwootAPIError: For other error responses
-        """
+        """Handle error responses and raise appropriate exceptions."""
         try:
             error_data = response.json()
             description = error_data.get(
@@ -300,71 +275,31 @@ class AsyncHTTPClient:
         if not response.is_success:
             self._handle_error(response)
 
-        # Handle 204 No Content
-        if response.status_code == 204:
+        # Handle empty response body (204 No Content or empty 200)
+        if response.status_code == 204 or not response.content:
             return {}
 
         data = response.json()
         return self._unwrap_response(data)
 
     async def get(self, path: str, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Make async GET request.
-
-        Args:
-            path: Request path
-            **kwargs: Additional arguments (params, headers, etc.)
-
-        Returns:
-            Response data
-        """
+        """Make async GET request."""
         return await self.request("GET", path, **kwargs)
 
     async def post(self, path: str, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Make async POST request.
-
-        Args:
-            path: Request path
-            **kwargs: Additional arguments (json, data, files, etc.)
-
-        Returns:
-            Response data
-        """
+        """Make async POST request."""
         return await self.request("POST", path, **kwargs)
 
     async def put(self, path: str, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Make async PUT request.
-
-        Args:
-            path: Request path
-            **kwargs: Additional arguments (json, data, etc.)
-
-        Returns:
-            Response data
-        """
+        """Make async PUT request."""
         return await self.request("PUT", path, **kwargs)
 
     async def patch(self, path: str, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Make async PATCH request.
-
-        Args:
-            path: Request path
-            **kwargs: Additional arguments (json, data, etc.)
-
-        Returns:
-            Response data
-        """
+        """Make async PATCH request."""
         return await self.request("PATCH", path, **kwargs)
 
     async def delete(self, path: str, **kwargs: Any) -> dict[str, Any] | list[Any]:
-        """Make async DELETE request.
-
-        Args:
-            path: Request path
-            **kwargs: Additional arguments
-
-        Returns:
-            Response data (usually empty)
-        """
+        """Make async DELETE request."""
         return await self.request("DELETE", path, **kwargs)
 
     async def aclose(self) -> None:
