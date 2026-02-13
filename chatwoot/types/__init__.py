@@ -10,7 +10,7 @@ from chatwoot.types.common import (
     MessageType,
     PaginationMeta,
 )
-from chatwoot.types.contact import Contact, ContactInbox
+from chatwoot.types.contact import Contact, ContactCreateResponse, ContactInbox
 from chatwoot.types.conversation import (
     Conversation,
     ConversationAssignee,
@@ -18,6 +18,7 @@ from chatwoot.types.conversation import (
     ConversationInbox,
     ConversationMeta,
     ConversationTeam,
+    ConversationToggleStatusResponse,
 )
 from chatwoot.types.inbox import Inbox
 from chatwoot.types.label import Label
@@ -39,6 +40,7 @@ __all__ = [
     "Agent",
     # Contact
     "Contact",
+    "ContactCreateResponse",
     "ContactInbox",
     # Conversation
     "Conversation",
@@ -47,6 +49,7 @@ __all__ = [
     "ConversationInbox",
     "ConversationMeta",
     "ConversationTeam",
+    "ConversationToggleStatusResponse",
     # Inbox
     "Inbox",
     # Label

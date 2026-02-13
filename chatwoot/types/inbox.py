@@ -13,7 +13,7 @@ class Inbox(BaseModel):
     id: int
     channel_id: int
     name: str
-    channel_type: ChannelType
+    channel_type: str
     greeting_enabled: bool = False
     greeting_message: str | None = None
     working_hours_enabled: bool = False

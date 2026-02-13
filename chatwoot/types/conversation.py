@@ -86,3 +86,12 @@ class Conversation(BaseModel):
     messages: list = Field(default_factory=list)
     contact: ConversationContact | None = None
     inbox: ConversationInbox | None = None
+
+
+class ConversationToggleStatusResponse(BaseModel):
+    """Response from toggling conversation status."""
+
+    success: bool
+    current_status: ConversationStatus
+    conversation_status: ConversationStatus | None = None
+    snoozed_until: int | None = None

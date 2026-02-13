@@ -9,7 +9,7 @@ class ContactInbox(BaseModel):
     """Contact's inbox association."""
 
     source_id: str
-    inbox_id: int
+    inbox_id: int | None = None
 
 
 class Contact(BaseModel):
@@ -29,3 +29,10 @@ class Contact(BaseModel):
     created_at: datetime | None = None
     availability_status: str | None = None
     blocked: bool = False
+
+
+class ContactCreateResponse(BaseModel):
+    """Response from creating a contact."""
+
+    contact: Contact
+    contact_inbox: ContactInbox
