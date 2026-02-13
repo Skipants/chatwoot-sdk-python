@@ -51,6 +51,16 @@ class AvailabilityStatus(str, Enum):
     OFFLINE = "offline"
 
 
+class ConversationPriority(str, Enum):
+    """Priority of a conversation."""
+
+    NONE = "none"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    URGENT = "urgent"
+
+
 class ChannelType(str, Enum):
     """Type of inbox channel."""
 

@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, Field
 
-from chatwoot.types.common import ConversationStatus
+from chatwoot.types.common import ConversationPriority, ConversationStatus
 
 
 class ConversationContact(BaseModel):
@@ -74,7 +74,7 @@ class Conversation(BaseModel):
     created_at: int | None = None  # Unix timestamp
     unread_count: int = 0
     first_reply_created_at: int | None = None  # Unix timestamp
-    priority: str | None = None
+    priority: ConversationPriority | None = None
     waiting_since: int | None = None  # Unix timestamp
     snoozed_until: int | None = None  # Unix timestamp
     can_reply: bool = True
