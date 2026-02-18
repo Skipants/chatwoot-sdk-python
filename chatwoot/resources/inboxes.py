@@ -24,10 +24,10 @@ class InboxesResource(BaseResource):
             ChatwootAuthError: If authentication fails
             ChatwootPermissionError: If user doesn't have access
 
-        Example:
-            >>> inboxes = client.inboxes.list(account_id=1)
-            >>> for inbox in inboxes:
-            ...     print(inbox.name)
+        Examples:
+             inboxes = client.inboxes.list(account_id=1)
+             for inbox in inboxes:
+                 print(inbox.name)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/inboxes")
         if isinstance(response, list):
@@ -48,9 +48,9 @@ class InboxesResource(BaseResource):
             ChatwootNotFoundError: If inbox not found
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> inbox = client.inboxes.get(account_id=1, inbox_id=5)
-            >>> print(inbox.name)
+        Examples:
+             inbox = client.inboxes.get(account_id=1, inbox_id=5)
+             print(inbox.name)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}")
         return Inbox(**response)
@@ -77,12 +77,12 @@ class InboxesResource(BaseResource):
             ChatwootValidationError: If validation fails
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> inbox = client.inboxes.create(
-            ...     account_id=1,
-            ...     name="Support Inbox",
-            ...     channel_type="api"
-            ... )
+        Examples:
+             inbox = client.inboxes.create(
+                 account_id=1,
+                 name="Support Inbox",
+                 channel_type="api"
+            )
         """
         data = {"name": name, "channel": {"type": channel_type, **kwargs}}
         response = self._http.post(f"/api/v1/accounts/{account_id}/inboxes", json=data)
@@ -108,13 +108,13 @@ class InboxesResource(BaseResource):
             ChatwootNotFoundError: If inbox not found
             ChatwootValidationError: If validation fails
 
-        Example:
-            >>> inbox = client.inboxes.update(
-            ...     account_id=1,
-            ...     inbox_id=5,
-            ...     name="New Name",
-            ...     enable_auto_assignment=True
-            ... )
+        Examples:
+             inbox = client.inboxes.update(
+                 account_id=1,
+                 inbox_id=5,
+                 name="New Name",
+                 enable_auto_assignment=True
+            )
         """
         response = self._http.patch(
             f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}",

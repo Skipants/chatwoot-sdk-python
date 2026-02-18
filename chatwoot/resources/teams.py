@@ -22,8 +22,8 @@ class TeamAgentsResource(BaseResource):
         Returns:
             List of Agent objects in the team
 
-        Example:
-            >>> agents = client.teams.agents.list(account_id=1, team_id=5)
+        Examples:
+             agents = client.teams.agents.list(account_id=1, team_id=5)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/teams/{team_id}/team_members"
@@ -40,12 +40,12 @@ class TeamAgentsResource(BaseResource):
             team_id: The team ID
             agent_ids: List of agent IDs to add
 
-        Example:
-            >>> client.teams.agents.add(
-            ...     account_id=1,
-            ...     team_id=5,
-            ...     agent_ids=[10, 11, 12]
-            ... )
+        Examples:
+             client.teams.agents.add(
+                 account_id=1,
+                 team_id=5,
+                 agent_ids=[10, 11, 12]
+            )
         """
         data = {"user_ids": agent_ids}
         self._http.post(
@@ -61,12 +61,12 @@ class TeamAgentsResource(BaseResource):
             team_id: The team ID
             agent_ids: List of agent IDs to remove
 
-        Example:
-            >>> client.teams.agents.remove(
-            ...     account_id=1,
-            ...     team_id=5,
-            ...     agent_ids=[10]
-            ... )
+        Examples:
+             client.teams.agents.remove(
+                 account_id=1,
+                 team_id=5,
+                 agent_ids=[10]
+            )
         """
         data = {"user_ids": agent_ids}
         self._http.delete(
@@ -141,10 +141,10 @@ class TeamsResource(BaseResource):
         Returns:
             List of Team objects
 
-        Example:
-            >>> teams = client.teams.list(account_id=1)
-            >>> for team in teams:
-            ...     print(team.name)
+        Examples:
+             teams = client.teams.list(account_id=1)
+             for team in teams:
+                 print(team.name)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/teams")
         if isinstance(response, list):
@@ -161,9 +161,9 @@ class TeamsResource(BaseResource):
         Returns:
             Team object
 
-        Example:
-            >>> team = client.teams.get(account_id=1, team_id=5)
-            >>> print(team.description)
+        Examples:
+             team = client.teams.get(account_id=1, team_id=5)
+             print(team.description)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/teams/{team_id}")
         return Team(**response)
@@ -184,13 +184,13 @@ class TeamsResource(BaseResource):
         Returns:
             Created Team object
 
-        Example:
-            >>> team = client.teams.create(
-            ...     account_id=1,
-            ...     name="Support Team",
-            ...     description="Customer support team",
-            ...     allow_auto_assign=True
-            ... )
+        Examples:
+             team = client.teams.create(
+                 account_id=1,
+                 name="Support Team",
+                 description="Customer support team",
+                 allow_auto_assign=True
+            )
         """
         data = {"name": name, **kwargs}
         response = self._http.post(f"/api/v1/accounts/{account_id}/teams", json=data)
@@ -212,12 +212,12 @@ class TeamsResource(BaseResource):
         Returns:
             Updated Team object
 
-        Example:
-            >>> team = client.teams.update(
-            ...     account_id=1,
-            ...     team_id=5,
-            ...     name="New Team Name"
-            ... )
+        Examples:
+             team = client.teams.update(
+                 account_id=1,
+                 team_id=5,
+                 name="New Team Name"
+            )
         """
         response = self._http.patch(
             f"/api/v1/accounts/{account_id}/teams/{team_id}",
@@ -232,8 +232,8 @@ class TeamsResource(BaseResource):
             account_id: The account ID
             team_id: The team ID
 
-        Example:
-            >>> client.teams.delete(account_id=1, team_id=5)
+        Examples:
+             client.teams.delete(account_id=1, team_id=5)
         """
         self._http.delete(f"/api/v1/accounts/{account_id}/teams/{team_id}")
 

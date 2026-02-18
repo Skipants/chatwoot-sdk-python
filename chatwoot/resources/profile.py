@@ -18,10 +18,10 @@ class ProfileResource(BaseResource):
         Raises:
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> client = ChatwootClient(base_url="...", api_token="...")
-            >>> profile = client.profile.get()
-            >>> print(profile.name)
+        Examples:
+             client = ChatwootClient(base_url="", api_token="")
+             profile = client.profile.get()
+             print(profile.name)
         """
         response = self._http.get("/api/v1/profile")
         return Profile(**response)
@@ -39,10 +39,10 @@ class AsyncProfileResource(AsyncBaseResource):
         Raises:
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> client = AsyncChatwootClient(base_url="...", api_token="...")
-            >>> profile = await client.profile.get()
-            >>> print(profile.name)
+        Examples:
+             client = AsyncChatwootClient(base_url="", api_token="")
+             profile = await client.profile.get()
+             print(profile.name)
         """
         response = await self._http.get("/api/v1/profile")
         return Profile(**response)
