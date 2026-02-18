@@ -46,7 +46,10 @@ def main() -> None:
 
             for convo in conversations:
                 # Skip high-priority conversations
-                if convo.priority in (ConversationPriority.URGENT, ConversationPriority.HIGH):
+                if convo.priority in (
+                    ConversationPriority.URGENT,
+                    ConversationPriority.HIGH,
+                ):
                     skipped_priority += 1
                     print(
                         f"  Skipping conversation {convo.id} "
