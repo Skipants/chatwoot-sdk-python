@@ -1,5 +1,7 @@
 """Profile resource for fetching user profile information."""
 
+from __future__ import annotations
+
 from chatwoot.resources._base import AsyncBaseResource, BaseResource
 from chatwoot.types.profile import Profile
 

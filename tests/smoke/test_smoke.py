@@ -33,6 +33,7 @@ def _uid() -> str:
 # Helpers for cleanup
 # ---------------------------------------------------------------------------
 
+
 def _cleanup(client: ChatwootClient, account_id: int, state: dict) -> None:
     """Best-effort cleanup of resources created during the run."""
     cid = state.get("contact_id")
@@ -61,6 +62,7 @@ def _teardown(client: ChatwootClient, account_id: int, state: dict):
 # 1. Profile
 # ---------------------------------------------------------------------------
 
+
 class TestProfile:
     def test_get_profile(self, client: ChatwootClient, state: dict):
         profile = client.profile.get()
@@ -73,6 +75,7 @@ class TestProfile:
 # ---------------------------------------------------------------------------
 # 2. Agents
 # ---------------------------------------------------------------------------
+
 
 class TestAgents:
     def test_list_agents(self, client: ChatwootClient, account_id: int, state: dict):
@@ -89,13 +92,18 @@ class TestAgents:
 # 3. Inboxes
 # ---------------------------------------------------------------------------
 
+
 class TestInboxes:
-    def test_list_or_create_inbox(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_list_or_create_inbox(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         inboxes = client.inboxes.list(account_id)
         assert isinstance(inboxes, list)
 
         # Prefer an existing API-type inbox; fall back to creating one
-        api_inbox = next((i for i in inboxes if "api" in (i.channel_type or "").lower()), None)
+        api_inbox = next(
+            (i for i in inboxes if "api" in (i.channel_type or "").lower()), None
+        )
         if api_inbox:
             state["inbox_id"] = api_inbox.id
         elif inboxes:
@@ -119,6 +127,7 @@ class TestInboxes:
 # ---------------------------------------------------------------------------
 # 4. Teams  (create -> get -> update -> list -> delete)
 # ---------------------------------------------------------------------------
+
 
 class TestTeams:
     def test_create_team(self, client: ChatwootClient, account_id: int, state: dict):
@@ -153,17 +162,28 @@ class TestTeams:
 # 5. Team Agents
 # ---------------------------------------------------------------------------
 
-class TestTeamAgents:
-    def test_add_agent_to_team(self, client: ChatwootClient, account_id: int, state: dict):
-        client.teams.agents.add(account_id, state["team_id"], agent_ids=[state["agent_id"]])
 
-    def test_list_team_agents(self, client: ChatwootClient, account_id: int, state: dict):
+class TestTeamAgents:
+    def test_add_agent_to_team(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
+        client.teams.agents.add(
+            account_id, state["team_id"], agent_ids=[state["agent_id"]]
+        )
+
+    def test_list_team_agents(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         agents = client.teams.agents.list(account_id, state["team_id"])
         assert isinstance(agents, list)
         assert any(a.id == state["agent_id"] for a in agents)
 
-    def test_remove_agent_from_team(self, client: ChatwootClient, account_id: int, state: dict):
-        client.teams.agents.remove(account_id, state["team_id"], agent_ids=[state["agent_id"]])
+    def test_remove_agent_from_team(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
+        client.teams.agents.remove(
+            account_id, state["team_id"], agent_ids=[state["agent_id"]]
+        )
         agents = client.teams.agents.list(account_id, state["team_id"])
         assert not any(a.id == state["agent_id"] for a in agents)
 
@@ -171,6 +191,7 @@ class TestTeamAgents:
 # ---------------------------------------------------------------------------
 # 6. Contacts
 # ---------------------------------------------------------------------------
+
 
 class TestContacts:
     def test_create_contact(self, client: ChatwootClient, account_id: int, state: dict):
@@ -222,7 +243,9 @@ class TestContacts:
         assert isinstance(labels, list)
         assert "sdk-smoke-label" in labels
 
-    def test_contact_conversations(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_contact_conversations(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         convos = client.contacts.conversations(account_id, state["contact_id"])
         assert isinstance(convos, list)
 
@@ -231,8 +254,11 @@ class TestContacts:
 # 7. Conversations
 # ---------------------------------------------------------------------------
 
+
 class TestConversations:
-    def test_create_conversation(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_create_conversation(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         source_id = state.get("source_id", f"{PREFIX}src-{_uid()}")
         conversation = client.conversations.create(
             account_id,
@@ -244,18 +270,24 @@ class TestConversations:
         assert conversation.id > 0
         state["conversation_id"] = conversation.id
 
-    def test_get_conversation(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_get_conversation(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         convo = client.conversations.get(account_id, state["conversation_id"])
         assert isinstance(convo, Conversation)
         assert convo.id == state["conversation_id"]
 
-    def test_update_conversation(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_update_conversation(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         convo = client.conversations.update(
             account_id, state["conversation_id"], assignee_id=state["agent_id"]
         )
         assert isinstance(convo, Conversation)
 
-    def test_list_conversations(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_list_conversations(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         convos = client.conversations.list(account_id)
         assert isinstance(convos, list)
 
@@ -271,7 +303,9 @@ class TestConversations:
         counts = client.conversations.get_counts(account_id)
         assert isinstance(counts, dict)
 
-    def test_conversation_labels(self, client: ChatwootClient, account_id: int, state: dict):
+    def test_conversation_labels(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
         labels = client.conversations.labels.add(
             account_id, state["conversation_id"], labels=["sdk-smoke-label"]
         )
@@ -286,6 +320,7 @@ class TestConversations:
 # ---------------------------------------------------------------------------
 # 8. Messages
 # ---------------------------------------------------------------------------
+
 
 class TestMessages:
     def test_create_message(self, client: ChatwootClient, account_id: int, state: dict):
@@ -309,6 +344,7 @@ class TestMessages:
 # ---------------------------------------------------------------------------
 # 9. Final cleanup: delete team (contact cleaned by _teardown fixture)
 # ---------------------------------------------------------------------------
+
 
 class TestCleanup:
     def test_delete_team(self, client: ChatwootClient, account_id: int, state: dict):

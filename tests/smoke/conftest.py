@@ -11,7 +11,9 @@ from chatwoot import ChatwootClient
 
 def pytest_addoption(parser: pytest.Parser) -> None:
     group = parser.getgroup("chatwoot", "Chatwoot smoke test options")
-    group.addoption("--url", default=None, help="Chatwoot instance URL (must be localhost)")
+    group.addoption(
+        "--url", default=None, help="Chatwoot instance URL (must be localhost)"
+    )
     group.addoption("--account-id", default=None, type=int, help="Chatwoot account ID")
     group.addoption("--token", default=None, help="Chatwoot API access token")
 

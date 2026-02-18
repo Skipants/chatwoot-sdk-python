@@ -4,7 +4,7 @@ Looks up each user by email — creates the contact if missing, updates
 custom_attributes and labels if it already exists.
 """
 
-from chatwoot import ChatwootClient, ChatwootNotFoundError
+from chatwoot import ChatwootClient
 
 BASE_URL = "http://localhost:3000"
 API_TOKEN = "your-api-token"

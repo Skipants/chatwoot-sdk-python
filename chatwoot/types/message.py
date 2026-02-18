@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, Field
 
-from chatwoot.types.common import MessageContentType, MessageType
+from chatwoot.types.common import MessageContentType
 
 
 class MessageAttachment(BaseModel):
