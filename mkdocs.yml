@@ -52,6 +52,11 @@ plugins:
 
 nav:
   - Home: index.md
+  - Examples:
+    - Handle Support Request: examples/handle-support-request.md
+    - Auto-Resolve Stale: examples/auto-resolve-stale.md
+    - Sync Contacts: examples/sync-contacts.md
+    - Pagination: examples/pagination.md
   - API Reference:
     - Client: api/client.md
     - Resources:
