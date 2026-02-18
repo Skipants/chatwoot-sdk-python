@@ -17,6 +17,8 @@ pip install chatwoot-sdk
 uv add chatwoot-sdk
 ```
 
+> **Note:** The PyPI package name is `chatwoot-sdk`. The GitHub repository is named `chatwoot-sdk-python`.
+
 ## Quick Start
 
 ```python
@@ -287,7 +289,7 @@ chatwoot-sdk-python/
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.11+
 - httpx
 - pydantic
 
@@ -301,6 +303,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Support
 
-- [Documentation](https://github.com/yourusername/chatwoot-sdk-python)
-- [Issue Tracker](https://github.com/yourusername/chatwoot-sdk-python/issues)
+- [Documentation](https://github.com/chatwoot/chatwoot-sdk-python)
+- [Issue Tracker](https://github.com/chatwoot/chatwoot-sdk-python/issues)
 - [Chatwoot API Documentation](https://www.chatwoot.com/docs/product/others/api)
