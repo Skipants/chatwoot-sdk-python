@@ -36,21 +36,21 @@ class HTTPClient:
         """Unwrap API response to extract actual data.
 
         Chatwoot API returns data in various formats:
-        - {payload: [...]} - list response
-        - {data: {payload: [...]}} - nested list response
-        - {id: 1, ...} - single object response
+        - {payload: []} - list response
+        - {data: {payload: []}} - nested list response
+        - {id: 1, } - single object response
         """
         if not isinstance(data, dict):
             return data
 
-        # {data: {payload: [...]}} or {data: ...}
+        # {data: {payload: []}} or {data: }
         if "data" in data:
             nested_data = data["data"]
             if isinstance(nested_data, dict) and "payload" in nested_data:
                 return nested_data["payload"]
             return nested_data
 
-        # {payload: ...}
+        # {payload: }
         if "payload" in data:
             return data["payload"]
 
@@ -206,21 +206,21 @@ class AsyncHTTPClient:
         """Unwrap API response to extract actual data.
 
         Chatwoot API returns data in various formats:
-        - {payload: [...]} - list response
-        - {data: {payload: [...]}} - nested list response
-        - {id: 1, ...} - single object response
+        - {payload: []} - list response
+        - {data: {payload: []}} - nested list response
+        - {id: 1, } - single object response
         """
         if not isinstance(data, dict):
             return data
 
-        # {data: {payload: [...]}} or {data: ...}
+        # {data: {payload: []}} or {data: }
         if "data" in data:
             nested_data = data["data"]
             if isinstance(nested_data, dict) and "payload" in nested_data:
                 return nested_data["payload"]
             return nested_data
 
-        # {payload: ...}
+        # {payload: }
         if "payload" in data:
             return data["payload"]
 

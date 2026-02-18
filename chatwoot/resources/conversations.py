@@ -21,11 +21,11 @@ class ConversationLabelsResource(BaseResource):
         Returns:
             List of label strings
 
-        Example:
-            >>> labels = client.conversations.labels.list(
-            ...     account_id=1,
-            ...     conversation_id=42
-            ... )
+        Examples:
+             labels = client.conversations.labels.list(
+                 account_id=1,
+                 conversation_id=42
+            )
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/conversations/{conversation_id}/labels"
@@ -49,12 +49,12 @@ class ConversationLabelsResource(BaseResource):
         Returns:
             Updated list of labels
 
-        Example:
-            >>> labels = client.conversations.labels.add(
-            ...     account_id=1,
-            ...     conversation_id=42,
-            ...     labels=["urgent", "billing"]
-            ... )
+        Examples:
+             labels = client.conversations.labels.add(
+                 account_id=1,
+                 conversation_id=42,
+                 labels=["urgent", "billing"]
+            )
         """
         data = {"labels": labels}
         response = self._http.post(
@@ -145,13 +145,13 @@ class ConversationsResource(BaseResource):
         Returns:
             List of Conversation objects
 
-        Example:
-            >>> conversations = client.conversations.list(
-            ...     account_id=1,
-            ...     status="open",
-            ...     assignee_type="me",
-            ...     page=1
-            ... )
+        Examples:
+             conversations = client.conversations.list(
+                 account_id=1,
+                 status="open",
+                 assignee_type="me",
+                 page=1
+            )
         """
         params: dict[str, Any] = {
             "status": status,
@@ -186,8 +186,8 @@ class ConversationsResource(BaseResource):
         Returns:
             Conversation object
 
-        Example:
-            >>> conversation = client.conversations.get(account_id=1, conversation_id=42)
+        Examples:
+             conversation = client.conversations.get(account_id=1, conversation_id=42)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/conversations/{conversation_id}"
@@ -214,13 +214,13 @@ class ConversationsResource(BaseResource):
         Returns:
             Created Conversation object
 
-        Example:
-            >>> conversation = client.conversations.create(
-            ...     account_id=1,
-            ...     source_id="user-123",
-            ...     inbox_id=5,
-            ...     contact_id=100
-            ... )
+        Examples:
+             conversation = client.conversations.create(
+                 account_id=1,
+                 source_id="user-123",
+                 inbox_id=5,
+                 contact_id=100
+            )
         """
         data = {
             "source_id": source_id,
@@ -258,13 +258,13 @@ class ConversationsResource(BaseResource):
         Returns:
             Updated Conversation object
 
-        Example:
-            >>> conversation = client.conversations.update(
-            ...     account_id=1,
-            ...     conversation_id=42,
-            ...     status="resolved",
-            ...     assignee_id=10
-            ... )
+        Examples:
+             conversation = client.conversations.update(
+                 account_id=1,
+                 conversation_id=42,
+                 status="resolved",
+                 assignee_id=10
+            )
         """
         data = {**kwargs}
         if status is not None:
@@ -296,12 +296,12 @@ class ConversationsResource(BaseResource):
         Returns:
             Updated Conversation object
 
-        Example:
-            >>> conversation = client.conversations.assign(
-            ...     account_id=1,
-            ...     conversation_id=42,
-            ...     assignee_id=10
-            ... )
+        Examples:
+             conversation = client.conversations.assign(
+                 account_id=1,
+                 conversation_id=42,
+                 assignee_id=10
+            )
         """
         return self.update(account_id, conversation_id, assignee_id=assignee_id)
 
@@ -321,13 +321,13 @@ class ConversationsResource(BaseResource):
         Returns:
             ConversationToggleStatusResponse
 
-        Example:
-            >>> result = client.conversations.toggle_status(
-            ...     account_id=1,
-            ...     conversation_id=42,
-            ...     status="resolved"
-            ... )
-            >>> print(result.current_status)
+        Examples:
+             result = client.conversations.toggle_status(
+                 account_id=1,
+                 conversation_id=42,
+                 status="resolved"
+            )
+             print(result.current_status)
         """
         data = {"status": status}
         response = self._http.post(
@@ -352,9 +352,9 @@ class ConversationsResource(BaseResource):
         Returns:
             Dictionary with conversation counts
 
-        Example:
-            >>> counts = client.conversations.get_counts(account_id=1, status="open")
-            >>> print(counts)
+        Examples:
+             counts = client.conversations.get_counts(account_id=1, status="open")
+             print(counts)
         """
         params = {"status": status, **filters}
         response = self._http.get(

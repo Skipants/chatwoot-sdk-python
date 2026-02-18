@@ -24,10 +24,10 @@ class AgentsResource(BaseResource):
             ChatwootAuthError: If authentication fails
             ChatwootPermissionError: If user doesn't have access
 
-        Example:
-            >>> agents = client.agents.list(account_id=1)
-            >>> for agent in agents:
-            ...     print(agent.name, agent.role)
+        Examples:
+             agents = client.agents.list(account_id=1)
+             for agent in agents:
+                 print(agent.name, agent.role)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/agents")
         if isinstance(response, list):
@@ -48,9 +48,9 @@ class AgentsResource(BaseResource):
             ChatwootNotFoundError: If agent not found
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> agent = client.agents.get(account_id=1, agent_id=10)
-            >>> print(agent.email)
+        Examples:
+             agent = client.agents.get(account_id=1, agent_id=10)
+             print(agent.email)
         """
         response = self._http.get(f"/api/v1/accounts/{account_id}/agents/{agent_id}")
         return Agent(**response)
@@ -79,13 +79,13 @@ class AgentsResource(BaseResource):
             ChatwootValidationError: If validation fails
             ChatwootAuthError: If authentication fails
 
-        Example:
-            >>> agent = client.agents.add(
-            ...     account_id=1,
-            ...     name="John Doe",
-            ...     email="john@example.com",
-            ...     role="agent"
-            ... )
+        Examples:
+             agent = client.agents.add(
+                 account_id=1,
+                 name="John Doe",
+                 email="john@example.com",
+                 role="agent"
+            )
         """
         data = {"name": name, "email": email, "role": role, **kwargs}
         response = self._http.post(f"/api/v1/accounts/{account_id}/agents", json=data)
@@ -111,13 +111,13 @@ class AgentsResource(BaseResource):
             ChatwootNotFoundError: If agent not found
             ChatwootValidationError: If validation fails
 
-        Example:
-            >>> agent = client.agents.update(
-            ...     account_id=1,
-            ...     agent_id=10,
-            ...     name="Jane Doe",
-            ...     role="administrator"
-            ... )
+        Examples:
+             agent = client.agents.update(
+                 account_id=1,
+                 agent_id=10,
+                 name="Jane Doe",
+                 role="administrator"
+            )
         """
         response = self._http.patch(
             f"/api/v1/accounts/{account_id}/agents/{agent_id}",
@@ -136,8 +136,8 @@ class AgentsResource(BaseResource):
             ChatwootNotFoundError: If agent not found
             ChatwootPermissionError: If user doesn't have permission
 
-        Example:
-            >>> client.agents.remove(account_id=1, agent_id=10)
+        Examples:
+             client.agents.remove(account_id=1, agent_id=10)
         """
         self._http.delete(f"/api/v1/accounts/{account_id}/agents/{agent_id}")
 

@@ -21,10 +21,10 @@ class MessagesResource(BaseResource):
         Returns:
             List of Message objects
 
-        Example:
-            >>> messages = client.messages.list(account_id=1, conversation_id=42)
-            >>> for msg in messages:
-            ...     print(msg.content)
+        Examples:
+             messages = client.messages.list(account_id=1, conversation_id=42)
+             for msg in messages:
+                 print(msg.content)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/conversations/{conversation_id}/messages"
@@ -57,14 +57,14 @@ class MessagesResource(BaseResource):
         Returns:
             Created Message object
 
-        Example:
-            >>> message = client.messages.create(
-            ...     account_id=1,
-            ...     conversation_id=42,
-            ...     content="Hello, how can I help?",
-            ...     message_type="outgoing",
-            ...     private=False
-            ... )
+        Examples:
+             message = client.messages.create(
+                 account_id=1,
+                 conversation_id=42,
+                 content="Hello, how can I help?",
+                 message_type="outgoing",
+                 private=False
+            )
         """
         data = {
             "content": content,
@@ -96,12 +96,12 @@ class MessagesResource(BaseResource):
         Returns:
             Updated Message object
 
-        Example:
-            >>> message = client.messages.update(
-            ...     account_id=1,
-            ...     message_id=123,
-            ...     content="Updated message content"
-            ... )
+        Examples:
+             message = client.messages.update(
+                 account_id=1,
+                 message_id=123,
+                 content="Updated message content"
+            )
         """
         data = {"content": content}
         response = self._http.patch(
@@ -117,8 +117,8 @@ class MessagesResource(BaseResource):
             account_id: The account ID
             message_id: The message ID
 
-        Example:
-            >>> client.messages.delete(account_id=1, message_id=123)
+        Examples:
+             client.messages.delete(account_id=1, message_id=123)
         """
         self._http.delete(f"/api/v1/accounts/{account_id}/messages/{message_id}")
 

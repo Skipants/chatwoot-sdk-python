@@ -16,6 +16,9 @@ build/
 .coverage
 htmlcov/
 
+# Docs
+site/
+
 # IDE
 .vscode/
 .idea/

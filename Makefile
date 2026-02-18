@@ -1,4 +1,4 @@
-.PHONY: build publish publish-test test clean
+.PHONY: build publish publish-test test clean docs docs-serve
 
 build: clean
 	uv build
@@ -14,3 +14,9 @@ test:
 
 clean:
 	rm -rf dist/
+
+docs:
+	uv run --group docs mkdocs build
+
+docs-serve:
+	uv run --group docs mkdocs serve
