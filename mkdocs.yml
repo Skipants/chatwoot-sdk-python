@@ -1,0 +1,81 @@
+site_name: Chatwoot Python SDK
+site_description: Python SDK for the Chatwoot API — type-safe, async-ready, minimal.
+site_url: https://chatwoot.github.io/chatwoot-sdk-python/
+repo_url: https://github.com/chatwoot/chatwoot-sdk-python
+repo_name: chatwoot/chatwoot-sdk-python
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: false
+            show_signature_annotations: true
+            show_root_heading: true
+            show_root_full_path: false
+            merge_init_into_class: true
+            members_order: source
+            separate_signature: true
+            show_if_no_docstring: false
+            filters:
+              - "!^_"
+
+nav:
+  - Home: index.md
+  - API Reference:
+    - Client: api/client.md
+    - Resources:
+      - Profile: api/resources/profile.md
+      - Conversations: api/resources/conversations.md
+      - Messages: api/resources/messages.md
+      - Contacts: api/resources/contacts.md
+      - Inboxes: api/resources/inboxes.md
+      - Teams: api/resources/teams.md
+      - Agents: api/resources/agents.md
+    - Types: api/types.md
+    - Exceptions: api/exceptions.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
