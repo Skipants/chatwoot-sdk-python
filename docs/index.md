@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # Chatwoot Python SDK
 
 A modern, type-safe Python SDK for the [Chatwoot](https://www.chatwoot.com/) API. Provides both synchronous and asynchronous clients with full type hints and Pydantic models.
