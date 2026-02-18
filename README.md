@@ -8,8 +8,6 @@ A modern, type-safe Python SDK for the [Chatwoot](https://www.chatwoot.com/) API
 - ⚡ **Async support**: Both sync and async clients available
 - 🎯 **Comprehensive**: Covers all major Chatwoot API resources
 - 🛡️ **Error handling**: Custom exceptions for different error types
-- 📦 **Easy to use**: Clean, intuitive API design
-- ✅ **Well-tested**: Comprehensive test suite
 
 ## Installation
 
