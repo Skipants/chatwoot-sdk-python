@@ -23,7 +23,7 @@ class ContactLabelsResource(BaseResource):
             List of label strings
 
         Examples:
-             labels = client.contacts.labels.list(account_id=1, contact_id=100)
+             >>> labels = client.contacts.labels.list(account_id=1, contact_id=100)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/contacts/{contact_id}/labels"
@@ -46,11 +46,11 @@ class ContactLabelsResource(BaseResource):
             Updated list of labels
 
         Examples:
-             labels = client.contacts.labels.add(
-                 account_id=1,
-                 contact_id=100,
-                 labels=["vip", "priority"]
-            )
+             >>> labels = client.contacts.labels.add(
+             ... account_id=1,
+             ... contact_id=100,
+             ... labels=["vip", "priority"]
+             ... )
         """
         data = {"labels": labels}
         response = self._http.post(
@@ -126,9 +126,9 @@ class ContactsResource(BaseResource):
             List of Contact objects
 
         Examples:
-             contacts = client.contacts.list(account_id=1, page=1)
-             for contact in contacts:
-                 print(contact.name, contact.email)
+             >>> contacts = client.contacts.list(account_id=1, page=1)
+             ... for contact in contacts:
+             ... print(contact.name, contact.email)
         """
         params = {"page": page}
         response = self._http.get(
@@ -149,7 +149,7 @@ class ContactsResource(BaseResource):
             List of matching Contact objects
 
         Examples:
-             contacts = client.contacts.search(account_id=1, query="john@example.com")
+             >>> contacts = client.contacts.search(account_id=1, query="john@example.com")
         """
         params = {"q": query}
         response = self._http.get(
@@ -170,7 +170,7 @@ class ContactsResource(BaseResource):
             Contact object
 
         Examples:
-             contact = client.contacts.get(account_id=1, contact_id=100)
+             >>> contact = client.contacts.get(account_id=1, contact_id=100)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/contacts/{contact_id}"
@@ -194,13 +194,13 @@ class ContactsResource(BaseResource):
             ContactCreateResponse with contact and contact_inbox
 
         Examples:
-             result = client.contacts.create(
-                 account_id=1,
-                 inbox_id=5,
-                 name="John Doe",
-                 email="john@example.com",
-            )
-             print(result.contact.id, result.contact_inbox.source_id)
+             >>> result = client.contacts.create(
+             ... account_id=1,
+             ... inbox_id=5,
+             ... name="John Doe",
+             ... email="john@example.com",
+             ... )
+             ... print(result.contact.id, result.contact_inbox.source_id)
         """
         data = {"inbox_id": inbox_id, **kwargs}
         response = self._http.post(f"/api/v1/accounts/{account_id}/contacts", json=data)
@@ -223,12 +223,12 @@ class ContactsResource(BaseResource):
             Updated Contact object
 
         Examples:
-             contact = client.contacts.update(
-                 account_id=1,
-                 contact_id=100,
-                 name="Jane Doe",
-                 custom_attributes={"plan": "premium"}
-            )
+             >>> contact = client.contacts.update(
+             ... account_id=1,
+             ... contact_id=100,
+             ... name="Jane Doe",
+             ... custom_attributes={"plan": "premium"}
+             ... )
         """
         response = self._http.patch(
             f"/api/v1/accounts/{account_id}/contacts/{contact_id}",
@@ -244,7 +244,7 @@ class ContactsResource(BaseResource):
             contact_id: The contact ID
 
         Examples:
-             client.contacts.delete(account_id=1, contact_id=100)
+             >>> client.contacts.delete(account_id=1, contact_id=100)
         """
         self._http.delete(f"/api/v1/accounts/{account_id}/contacts/{contact_id}")
 
@@ -259,7 +259,7 @@ class ContactsResource(BaseResource):
             List of Conversation objects for this contact
 
         Examples:
-             conversations = client.contacts.conversations(account_id=1, contact_id=100)
+             >>> conversations = client.contacts.conversations(account_id=1, contact_id=100)
         """
         response = self._http.get(
             f"/api/v1/accounts/{account_id}/contacts/{contact_id}/conversations"

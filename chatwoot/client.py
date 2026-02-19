@@ -20,28 +20,28 @@ class ChatwootClient:
     All API operations are organized into resource-specific namespaces.
 
     Examples:
-        client = ChatwootClient(
-             base_url="https://app.chatwoot.com",
-             api_token="your_api_token_here"
-        )
-
-        # Fetch user profile
-        profile = client.profile.get()
-        print(profile.name)
-
-        # List conversations
-        conversations = client.conversations.list(account_id=1, status="open")
-
-        # Send a message
-        message = client.messages.create(
-             account_id=1,
-             conversation_id=42,
-             content="Hello from SDK!"
-        )
-
-        # Use as context manager for automatic cleanup
-        with ChatwootClient(base_url="", api_token="") as client:
-             profile = client.profile.get()
+        >>> client = ChatwootClient(
+        ...     base_url="https://app.chatwoot.com",
+        ...     api_token="your_api_token_here"
+        ... )
+        ...
+        >>> # Fetch user profile
+        >>> profile = client.profile.get()
+        >>> print(profile.name)
+        ...
+        >>> # List conversations
+        >>> conversations = client.conversations.list(account_id=1, status="open")
+        ...
+        >>> # Send a message
+        >>> message = client.messages.create(
+        ...     account_id=1,
+        ...     conversation_id=42,
+        ...     content="Hello from SDK!"
+        ... )
+        ...
+        >>> # Use as context manager for automatic cleanup
+        >>> with ChatwootClient(base_url="", api_token="") as client:
+        ...     profile = client.profile.get()
     """
 
     def __init__(self, base_url: str, api_token: str, timeout: float = 30.0):
@@ -91,30 +91,30 @@ class AsyncChatwootClient:
     patterns for non-blocking I/O operations.
 
     Examples:
-        import asyncio
-
-        async def main():
-             client = AsyncChatwootClient(
-                 base_url="https://app.chatwoot.com",
-                 api_token="your_api_token_here"
-             )
-
-             # Fetch user profile
-             profile = await client.profile.get()
-             print(profile.name)
-
-             # List conversations
-             conversations = await client.conversations.list(
-                 account_id=1,
-                 status="open"
-             )
-
-             await client.aclose()
-
-        # Or use as async context manager
-        async def main():
-             async with AsyncChatwootClient(base_url="", api_token="") as client:
-                 profile = await client.profile.get()
+        >>> import asyncio
+        >>>
+        >>> async def main():
+        ...     client = AsyncChatwootClient(
+        ...         base_url="https://app.chatwoot.com",
+        ...         api_token="your_api_token_here"
+        ...     )
+        ...
+        ...     # Fetch user profile
+        ...     profile = await client.profile.get()
+        ...     print(profile.name)
+        ...
+        ...     # List conversations
+        ...     conversations = await client.conversations.list(
+        ...         account_id=1,
+        ...         status="open"
+        ...     )
+        ...
+        ...     await client.aclose()
+        ...
+        >>> # Or use as async context manager
+        >>> async def main():
+        ...     async with AsyncChatwootClient(base_url="", api_token="") as client:
+        ...         profile = await client.profile.get()
     """
 
     def __init__(self, base_url: str, api_token: str, timeout: float = 30.0):
