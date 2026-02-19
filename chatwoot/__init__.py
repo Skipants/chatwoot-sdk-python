@@ -30,3 +30,28 @@ Examples:
     ...
     >>> client.close()
 """
+
+from chatwoot.client import AsyncChatwootClient, ChatwootClient
+from chatwoot.exceptions import (
+    ChatwootAPIError,
+    ChatwootAuthError,
+    ChatwootError,
+    ChatwootNotFoundError,
+    ChatwootPermissionError,
+    ChatwootValidationError,
+)
+
+__version__ = "0.1.0"
+
+__all__ = [
+    # Client classes
+    "ChatwootClient",
+    "AsyncChatwootClient",
+    # Exception classes
+    "ChatwootError",
+    "ChatwootAPIError",
+    "ChatwootAuthError",
+    "ChatwootNotFoundError",
+    "ChatwootPermissionError",
+    "ChatwootValidationError",
+]
