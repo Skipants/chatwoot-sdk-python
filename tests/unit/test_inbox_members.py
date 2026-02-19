@@ -3,7 +3,12 @@
 import pytest
 from unittest.mock import AsyncMock
 
-from chatwoot.resources.inboxes import InboxMembersResource, AsyncInboxMembersResource, InboxesResource, AsyncInboxesResource
+from chatwoot.resources.inboxes import (
+    InboxMembersResource,
+    AsyncInboxMembersResource,
+    InboxesResource,
+    AsyncInboxesResource,
+)
 from chatwoot.types.agent import Agent
 
 
@@ -41,9 +46,7 @@ def test_inbox_agents_list(mock_http):
     resource = InboxMembersResource(mock_http)
     agents = resource.list(account_id=1, inbox_id=5)
 
-    mock_http.get.assert_called_once_with(
-        "/api/v1/accounts/1/inbox_members/5"
-    )
+    mock_http.get.assert_called_once_with("/api/v1/accounts/1/inbox_members/5")
     assert isinstance(agents, list)
     assert len(agents) == 2
     assert isinstance(agents[0], Agent)
@@ -127,9 +130,7 @@ async def test_async_inbox_agents_list(mock_async_http):
     resource = AsyncInboxMembersResource(mock_async_http)
     agents = await resource.list(account_id=1, inbox_id=5)
 
-    mock_async_http.get.assert_called_once_with(
-        "/api/v1/accounts/1/inbox_members/5"
-    )
+    mock_async_http.get.assert_called_once_with("/api/v1/accounts/1/inbox_members/5")
     assert isinstance(agents, list)
     assert len(agents) == 2
     assert agents[0].name == "Alice"

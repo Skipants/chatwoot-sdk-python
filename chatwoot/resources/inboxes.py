@@ -61,7 +61,9 @@ class InboxMembersResource(BaseResource):
             return [Agent(**item) for item in response["payload"]]
         return []
 
-    def update(self, account_id: int, inbox_id: int, agent_ids: list[int]) -> list[Agent]:
+    def update(
+        self, account_id: int, inbox_id: int, agent_ids: list[int]
+    ) -> list[Agent]:
         """Replace all agents in an inbox (removes agents not in the list).
 
         Args:

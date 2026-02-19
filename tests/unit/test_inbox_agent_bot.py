@@ -29,9 +29,7 @@ def test_get_agent_bot(mock_http):
     resource = InboxesResource(mock_http)
     bot = resource.get_agent_bot(account_id=1, inbox_id=5)
 
-    mock_http.get.assert_called_once_with(
-        "/api/v1/accounts/1/inboxes/5/agent_bot"
-    )
+    mock_http.get.assert_called_once_with("/api/v1/accounts/1/inboxes/5/agent_bot")
     assert isinstance(bot, dict)
     assert bot["id"] == 2
     assert bot["name"] == "Support Bot"
