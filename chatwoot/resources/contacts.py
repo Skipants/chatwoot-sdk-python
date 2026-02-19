@@ -268,6 +268,28 @@ class ContactsResource(BaseResource):
             return [Conversation(**item) for item in response]
         return []
 
+    def contactable_inboxes(self, account_id: int, contact_id: int) -> list[dict]:
+        """Get inboxes that a contact can be reached through.
+
+        Args:
+            account_id: The account ID
+            contact_id: The contact ID
+
+        Returns:
+            List of dicts with 'source_id' and 'inbox' keys
+
+        Examples:
+             >>> inboxes = client.contacts.contactable_inboxes(account_id=1, contact_id=100)
+             ... for item in inboxes:
+             ...     print(item["source_id"], item["inbox"]["name"])
+        """
+        response = self._http.get(
+            f"/api/v1/accounts/{account_id}/contacts/{contact_id}/contactable_inboxes"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return response["payload"]
+        return response if isinstance(response, list) else []
+
 
 class AsyncContactsResource(AsyncBaseResource):
     """Asynchronous contacts resource."""
@@ -399,3 +421,20 @@ class AsyncContactsResource(AsyncBaseResource):
         if isinstance(response, list):
             return [Conversation(**item) for item in response]
         return []
+
+    async def contactable_inboxes(self, account_id: int, contact_id: int) -> list[dict]:
+        """Get inboxes that a contact can be reached through (async).
+
+        Args:
+            account_id: The account ID
+            contact_id: The contact ID
+
+        Returns:
+            List of dicts with 'source_id' and 'inbox' keys
+        """
+        response = await self._http.get(
+            f"/api/v1/accounts/{account_id}/contacts/{contact_id}/contactable_inboxes"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return response["payload"]
+        return response if isinstance(response, list) else []
