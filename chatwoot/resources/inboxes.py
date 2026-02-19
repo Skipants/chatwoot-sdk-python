@@ -5,11 +5,201 @@ from __future__ import annotations
 from typing import Any
 
 from chatwoot.resources._base import AsyncBaseResource, BaseResource
+from chatwoot.types.agent import Agent
 from chatwoot.types.inbox import Inbox
+
+
+class InboxMembersResource(BaseResource):
+    """Nested resource for managing inbox agents."""
+
+    def list(self, account_id: int, inbox_id: int) -> list[Agent]:
+        """List agents in an inbox.
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+
+        Returns:
+            List of Agent objects
+
+        Examples:
+            >>> agents = client.inboxes.agents.list(account_id=1, inbox_id=5)
+            ... for agent in agents:
+            ...     print(agent.name, agent.email)
+        """
+        response = self._http.get(
+            f"/api/v1/accounts/{account_id}/inbox_members/{inbox_id}"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    def add(self, account_id: int, inbox_id: int, agent_ids: list[int]) -> list[Agent]:
+        """Add agents to an inbox.
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs to add
+
+        Returns:
+            List of Agent objects in the inbox
+
+        Examples:
+            >>> agents = client.inboxes.agents.add(
+            ...     account_id=1,
+            ...     inbox_id=5,
+            ...     agent_ids=[10, 11, 12]
+            ... )
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        response = self._http.post(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    def update(
+        self, account_id: int, inbox_id: int, agent_ids: list[int]
+    ) -> list[Agent]:
+        """Replace all agents in an inbox (removes agents not in the list).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs — replaces the current set entirely
+
+        Returns:
+            List of Agent objects now in the inbox
+
+        Examples:
+            >>> agents = client.inboxes.agents.update(
+            ...     account_id=1,
+            ...     inbox_id=5,
+            ...     agent_ids=[10, 11]
+            ... )
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        response = self._http.patch(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    def remove(self, account_id: int, inbox_id: int, agent_ids: list[int]) -> None:
+        """Remove agents from an inbox.
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs to remove
+
+        Examples:
+            >>> client.inboxes.agents.remove(
+            ...     account_id=1,
+            ...     inbox_id=5,
+            ...     agent_ids=[10]
+            ... )
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        self._http.delete(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
+
+
+class AsyncInboxMembersResource(AsyncBaseResource):
+    """Async nested resource for managing inbox agents."""
+
+    async def list(self, account_id: int, inbox_id: int) -> list[Agent]:
+        """List agents in an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+
+        Returns:
+            List of Agent objects
+        """
+        response = await self._http.get(
+            f"/api/v1/accounts/{account_id}/inbox_members/{inbox_id}"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    async def add(
+        self, account_id: int, inbox_id: int, agent_ids: list[int]
+    ) -> list[Agent]:
+        """Add agents to an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs to add
+
+        Returns:
+            List of Agent objects in the inbox
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        response = await self._http.post(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    async def update(
+        self, account_id: int, inbox_id: int, agent_ids: list[int]
+    ) -> list[Agent]:
+        """Replace all agents in an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs — replaces the current set entirely
+
+        Returns:
+            List of Agent objects now in the inbox
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        response = await self._http.patch(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return [Agent(**item) for item in response["payload"]]
+        return []
+
+    async def remove(
+        self, account_id: int, inbox_id: int, agent_ids: list[int]
+    ) -> None:
+        """Remove agents from an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_ids: List of agent IDs to remove
+        """
+        data = {"inbox_id": inbox_id, "user_ids": agent_ids}
+        await self._http.delete(
+            f"/api/v1/accounts/{account_id}/inbox_members",
+            json=data,
+        )
 
 
 class InboxesResource(BaseResource):
     """Synchronous inboxes resource."""
+
+    def __init__(self, http):
+        """Initialize inboxes resource with nested agents resource."""
+        super().__init__(http)
+        self.agents = InboxMembersResource(http)
 
     def list(self, account_id: int) -> list[Inbox]:
         """List all inboxes in the account.
@@ -122,9 +312,54 @@ class InboxesResource(BaseResource):
         )
         return Inbox(**response)
 
+    def get_agent_bot(self, account_id: int, inbox_id: int) -> dict | None:
+        """Get the agent bot assigned to an inbox.
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+
+        Returns:
+            Agent bot dict, or None if no bot is assigned
+
+        Examples:
+            >>> bot = client.inboxes.get_agent_bot(account_id=1, inbox_id=5)
+            >>> if bot:
+            ...     print(bot["id"], bot["name"])
+        """
+        response = self._http.get(
+            f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}/agent_bot"
+        )
+        return response if isinstance(response, dict) else None
+
+    def set_agent_bot(
+        self, account_id: int, inbox_id: int, agent_bot_id: int | None
+    ) -> None:
+        """Assign or remove an agent bot from an inbox.
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_bot_id: Bot ID to assign, or None to remove the bot
+
+        Examples:
+            >>> client.inboxes.set_agent_bot(account_id=1, inbox_id=5, agent_bot_id=2)
+            >>> # Remove bot:
+            >>> client.inboxes.set_agent_bot(account_id=1, inbox_id=5, agent_bot_id=None)
+        """
+        self._http.post(
+            f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}/set_agent_bot",
+            json={"agent_bot": agent_bot_id},
+        )
+
 
 class AsyncInboxesResource(AsyncBaseResource):
     """Asynchronous inboxes resource."""
+
+    def __init__(self, http):
+        """Initialize async inboxes resource with nested agents resource."""
+        super().__init__(http)
+        self.agents = AsyncInboxMembersResource(http)
 
     async def list(self, account_id: int) -> list[Inbox]:
         """List all inboxes in the account (async).
@@ -200,3 +435,33 @@ class AsyncInboxesResource(AsyncBaseResource):
             json=kwargs,
         )
         return Inbox(**response)
+
+    async def get_agent_bot(self, account_id: int, inbox_id: int) -> dict | None:
+        """Get the agent bot assigned to an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+
+        Returns:
+            Agent bot dict, or None if no bot is assigned
+        """
+        response = await self._http.get(
+            f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}/agent_bot"
+        )
+        return response if isinstance(response, dict) else None
+
+    async def set_agent_bot(
+        self, account_id: int, inbox_id: int, agent_bot_id: int | None
+    ) -> None:
+        """Assign or remove an agent bot from an inbox (async).
+
+        Args:
+            account_id: The account ID
+            inbox_id: The inbox ID
+            agent_bot_id: Bot ID to assign, or None to remove the bot
+        """
+        await self._http.post(
+            f"/api/v1/accounts/{account_id}/inboxes/{inbox_id}/set_agent_bot",
+            json={"agent_bot": agent_bot_id},
+        )

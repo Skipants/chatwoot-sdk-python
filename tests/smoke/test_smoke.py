@@ -123,6 +123,23 @@ class TestInboxes:
         assert isinstance(inbox, Inbox)
         assert inbox.id == state["inbox_id"]
 
+    def test_inbox_agents_list(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
+        agents = client.inboxes.agents.list(account_id, state["inbox_id"])
+        assert isinstance(agents, list)
+        for agent in agents:
+            assert isinstance(agent, Agent)
+
+    def test_inbox_agents_add(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
+        agents = client.inboxes.agents.add(
+            account_id, state["inbox_id"], agent_ids=[state["agent_id"]]
+        )
+        assert isinstance(agents, list)
+        assert any(a.id == state["agent_id"] for a in agents)
+
 
 # ---------------------------------------------------------------------------
 # 4. Teams  (create -> get -> update -> list -> delete)
@@ -248,6 +265,17 @@ class TestContacts:
     ):
         convos = client.contacts.conversations(account_id, state["contact_id"])
         assert isinstance(convos, list)
+
+    def test_contactable_inboxes(
+        self, client: ChatwootClient, account_id: int, state: dict
+    ):
+        inboxes = client.contacts.contactable_inboxes(account_id, state["contact_id"])
+        assert isinstance(inboxes, list)
+        # Each item should have source_id and inbox keys
+        for item in inboxes:
+            assert "source_id" in item
+            assert "inbox" in item
+            assert "id" in item["inbox"]
 
 
 # ---------------------------------------------------------------------------

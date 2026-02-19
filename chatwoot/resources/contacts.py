@@ -268,6 +268,58 @@ class ContactsResource(BaseResource):
             return [Conversation(**item) for item in response]
         return []
 
+    def merge(
+        self, account_id: int, base_contact_id: int, mergee_contact_id: int
+    ) -> Contact:
+        """Merge two contacts. The mergee is deleted; the base contact is kept.
+
+        Args:
+            account_id: The account ID
+            base_contact_id: ID of the contact that remains after the merge
+            mergee_contact_id: ID of the contact that is merged in and deleted
+
+        Returns:
+            The resulting merged Contact object
+
+        Examples:
+            >>> contact = client.contacts.merge(
+            ...     account_id=1,
+            ...     base_contact_id=100,
+            ...     mergee_contact_id=200
+            ... )
+        """
+        data = {
+            "base_contact_id": base_contact_id,
+            "mergee_contact_id": mergee_contact_id,
+        }
+        response = self._http.post(
+            f"/api/v1/accounts/{account_id}/actions/contact_merge",
+            json=data,
+        )
+        return Contact(**response)
+
+    def contactable_inboxes(self, account_id: int, contact_id: int) -> list[dict]:
+        """Get inboxes that a contact can be reached through.
+
+        Args:
+            account_id: The account ID
+            contact_id: The contact ID
+
+        Returns:
+            List of dicts with 'source_id' and 'inbox' keys
+
+        Examples:
+             >>> inboxes = client.contacts.contactable_inboxes(account_id=1, contact_id=100)
+             ... for item in inboxes:
+             ...     print(item["source_id"], item["inbox"]["name"])
+        """
+        response = self._http.get(
+            f"/api/v1/accounts/{account_id}/contacts/{contact_id}/contactable_inboxes"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return response["payload"]
+        return response if isinstance(response, list) else []
+
 
 class AsyncContactsResource(AsyncBaseResource):
     """Asynchronous contacts resource."""
@@ -399,3 +451,43 @@ class AsyncContactsResource(AsyncBaseResource):
         if isinstance(response, list):
             return [Conversation(**item) for item in response]
         return []
+
+    async def merge(
+        self, account_id: int, base_contact_id: int, mergee_contact_id: int
+    ) -> Contact:
+        """Merge two contacts (async). The mergee is deleted; the base is kept.
+
+        Args:
+            account_id: The account ID
+            base_contact_id: ID of the contact that remains after the merge
+            mergee_contact_id: ID of the contact that is merged in and deleted
+
+        Returns:
+            The resulting merged Contact object
+        """
+        data = {
+            "base_contact_id": base_contact_id,
+            "mergee_contact_id": mergee_contact_id,
+        }
+        response = await self._http.post(
+            f"/api/v1/accounts/{account_id}/actions/contact_merge",
+            json=data,
+        )
+        return Contact(**response)
+
+    async def contactable_inboxes(self, account_id: int, contact_id: int) -> list[dict]:
+        """Get inboxes that a contact can be reached through (async).
+
+        Args:
+            account_id: The account ID
+            contact_id: The contact ID
+
+        Returns:
+            List of dicts with 'source_id' and 'inbox' keys
+        """
+        response = await self._http.get(
+            f"/api/v1/accounts/{account_id}/contacts/{contact_id}/contactable_inboxes"
+        )
+        if isinstance(response, dict) and "payload" in response:
+            return response["payload"]
+        return response if isinstance(response, list) else []

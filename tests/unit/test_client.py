@@ -24,6 +24,7 @@ def test_client_initialization(base_url, api_token):
     assert hasattr(client.conversations, "labels")
     assert hasattr(client.contacts, "labels")
     assert hasattr(client.teams, "agents")
+    assert hasattr(client.inboxes, "agents")
 
     client.close()
 
@@ -49,6 +50,7 @@ def test_async_client_initialization(base_url, api_token):
     assert hasattr(client.conversations, "labels")
     assert hasattr(client.contacts, "labels")
     assert hasattr(client.teams, "agents")
+    assert hasattr(client.inboxes, "agents")
 
 
 @pytest.mark.asyncio
