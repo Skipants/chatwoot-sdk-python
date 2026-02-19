@@ -45,7 +45,7 @@ class TeamAgentsResource(BaseResource):
             ...     account_id=1,
             ...     team_id=5,
             ...     agent_ids=[10, 11, 12]
-            ... 
+            ...
         """
         data = {"user_ids": agent_ids}
         self._http.post(
@@ -66,7 +66,7 @@ class TeamAgentsResource(BaseResource):
             ...     account_id=1,
             ...     team_id=5,
             ...     agent_ids=[10]
-            ... 
+            ...
         """
         data = {"user_ids": agent_ids}
         self._http.delete(
@@ -190,7 +190,7 @@ class TeamsResource(BaseResource):
             ...     name="Support Team",
             ...     description="Customer support team",
             ...     allow_auto_assign=True
-            ... 
+            ...
         """
         data = {"name": name, **kwargs}
         response = self._http.post(f"/api/v1/accounts/{account_id}/teams", json=data)
@@ -217,7 +217,7 @@ class TeamsResource(BaseResource):
             ...     account_id=1,
             ...     team_id=5,
             ...     name="New Team Name"
-            ... 
+            ...
         """
         response = self._http.patch(
             f"/api/v1/accounts/{account_id}/teams/{team_id}",
